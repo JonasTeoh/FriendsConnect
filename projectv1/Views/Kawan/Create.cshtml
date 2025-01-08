@@ -1,0 +1,96 @@
+﻿@model IEnumerable<projectv2.Models.FriendRequestViewModel>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-header text-center">
+                    <h3 class="mb-0">Add a Friend</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>User Name</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var modal in Model)
+                            {
+                                <tr>
+                                    <td>@modal.User.Name</td>
+                                    <td>@modal.User.Email</td>
+                                    <td>
+                                        @if (modal.IsRequestSent)
+                                        {
+                                            <button class="btn btn-secondary" disabled>Request Sent</button>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("SendRequest", "FriendRequest", new { receiverId = modal.User.Id })" class="btn btn-primary">Send Friend Request</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- Back Button -->
+                    <div class="d-flex justify-content-end mt-3">
+                        <a asp-controller="Kawan" asp-action="Index" class="btn btn-secondary">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .card-header {
+        background-color: #1E90FF;
+        color: white;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+    }
+
+    .btn-primary {
+        background-color: #1E90FF;
+        border-color: #1E90FF;
+    }
+
+        .btn-primary:hover {
+            background-color: #155a94;
+            border-color: #155a94;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .table {
+        margin-top: 1rem;
+    }
+
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+    .thead-dark {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .table-bordered {
+        border: 1px solid #ddd;
+    }
+</style>

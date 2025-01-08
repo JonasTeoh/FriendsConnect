@@ -1,0 +1,58 @@
+﻿@model projectv2.Models.GroupViewModel
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-header text-center">
+                    <h3 class="mb-0" style="color: white;">Add Group</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <!-- Group Name -->
+                        <div class="form-group mt-3">
+                            <label for="Name" class="form-label">Group Name</label>
+                            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Enter group name" required />
+                        </div>
+
+                        <!-- Group Description -->
+                        <div class="form-group mt-3">
+                            <label for="Description" class="form-label">Description</label>
+                            <textarea class="form-control" id="Description" asp-for="Description" rows="3" placeholder="Enter a brief description" required></textarea>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a asp-controller="Group" asp-action="Index" class="btn btn-secondary">Back</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .card-header {
+        background-color: #1E90FF;
+        color: white;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+    }
+
+    .btn-primary {
+        background-color: #1E90FF;
+        border-color: #1E90FF;
+    }
+
+        .btn-primary:hover {
+            background-color: #155a94;
+            border-color: #155a94;
+        }
+
+    .form-control {
+        border-radius: 0.5rem;
+    }
+</style>

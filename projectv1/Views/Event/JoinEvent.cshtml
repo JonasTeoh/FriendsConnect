@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "List of Friends Events";
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+    @functions {
+        public bool UserHasJoinedEvent(int userId, IEnumerable<EventHasFriend> eventHasFriends)
+        {
+            return eventHasFriends.Any(ehf => ehf.UserId == userId);
+        }
+    }
+}
+<div class="container mt-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h1 class="display-5 text-primary">List of Friends' Events</h1>
+            <p class="lead text-muted">Explore events organized by your friends and participate in them!</p>
+        </div>
+    </div>
+
+    <!-- Events Table -->
+    <div class="row">
+        <div class="col">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Name</th>
+                                <th>Organizer</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var eventItem in Model)
+                                {
+                                    <tr>
+                                        <td><strong>@eventItem.Name</strong></td>
+                                        <td>@eventItem.Organizer.Name</td>
+                                        <td>@eventItem.Date.ToString("MMM dd, yyyy")</td>
+                                        <td>@eventItem.Location</td>
+                                        <td>@eventItem.Description</td>
+                                        <td>
+                                            <span class="badge @(
+                                                eventItem.Status == "Active" ? "bg-success" :
+                                                eventItem.Status == "Upcoming" ? "bg-warning text-dark" :
+                                                "bg-secondary")">
+                                                @eventItem.Status
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-left">
+                                                <!-- Details Button -->
+                                                <a asp-controller="Event" asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-info me-2 text-white">
+                                                    <i class="bi bi-eye"></i> Details
+                                                </a>
+
+                                                @if (eventItem.Status != "Completed")
+                                                {
+                                                    var userId = int.Parse(HttpContextAccessor.HttpContext.Session.GetString("UserId")); // Get current user's ID
+
+                                                    if (UserHasJoinedEvent(userId, eventItem.EventHasFriends))
+                                                    {
+                                                        <!-- Quit Event Button -->
+                                                        <form method="post" action="@Url.Action("QuitEvent", "Event", new { eventId = eventItem.Id })" class="d-inline">
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="bi bi-x-circle"></i> Quit
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                    else
+                                                    {
+                                                        <!-- Join Event Button -->
+                                                        <form asp-action="Join" asp-controller="Event" method="post" class="d-inline">
+                                                            <input type="hidden" name="eventId" value="@eventItem.Id" />
+                                                            <button type="submit" class="btn btn-success">
+                                                                <i class="bi bi-check-circle"></i> Join
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">
+                                        No events found. Check back later or create your own!
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

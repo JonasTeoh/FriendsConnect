@@ -1,0 +1,124 @@
+﻿@model projectv2.Models.Event // Adjust to your actual Event model namespace
+
+@{
+    ViewData["Title"] = "Event Details";
+}
+
+@* Add custom styling for a more polished layout *@
+@{
+    var dateString = Model.Date.ToString("MM/dd/yyyy");
+}
+
+<style>
+    .event-details-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .event-details-header {
+        font-size: 2rem;
+        color: dodgerblue;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .event-details-section {
+        margin-bottom: 15px;
+    }
+
+        .event-details-section strong {
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .event-details-section p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+    .attendees-list {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+        .attendees-list li {
+            padding: 8px;
+            background-color: #f8f9fa;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+    .event-status {
+        padding: 10px;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .status-ongoing {
+        background-color: #2196F3;
+    }
+
+    .status-completed {
+        background-color: #4CAF50;
+    }
+
+    .status-canceled {
+        background-color: #f44336;
+    }
+</style>
+
+<div class="event-details-container">
+    <h1 class="event-details-header">@Model.Name</h1> <!-- Event Name -->
+
+    <div class="event-details-section">
+        <strong>Date:</strong>
+        <p>@Model.Date</p> <!-- Event Date -->
+    </div>
+
+    <div class="event-details-section">
+        <strong>Location:</strong>
+        <p>@Model.Location</p> <!-- Event Location -->
+    </div>
+
+    <div class="event-details-section">
+        <strong>Description:</strong>
+        <p>@Model.Description</p> <!-- Event Description -->
+    </div>
+
+    <div class="event-details-section">
+        <strong>Organizer:</strong>
+        <p>@Model.Organizer.Name</p> <!-- User ID of the Organizer (Display Name logic needed) -->
+    </div>
+
+    <div class="event-details-section">
+        <strong>Status:</strong>
+        <p>@Model.Status</p>
+    </div>
+
+    <h3>Attendees:</h3>
+    <ul class="attendees-list">
+        @if (Model.EventHasFriends == null || !Model.EventHasFriends.Any())
+        {
+            <li>There are no attendees</li>
+        }
+        else
+        {
+            @foreach (var attendee in Model.EventHasFriends)
+            {
+                <li>@attendee.User.Name</li> <!-- Assuming User has a Name property -->
+            }
+        }
+    </ul>
+
+    <div class="mt-3">
+        <a asp-controller="Event" asp-action="JoinEvent" class="btn btn-secondary">Back</a>
+    </div>
+
+</div>

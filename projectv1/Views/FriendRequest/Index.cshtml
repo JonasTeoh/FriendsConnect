@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Friend Requests";
+}
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h1 class="display-5 text-primary">Friend Requests</h1>
+            <p class="lead text-muted">Manage incoming friend requests</p>
+        </div>
+    </div>
+
+    <!-- Friend Requests Table -->
+    <div class="row">
+        <div class="col">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Sender</th>
+                                <th>Request Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var request in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@request.Sender.Name</strong>
+                                        </td>
+                                        <td>@request.RequestDate.ToString("MMM dd, yyyy")</td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <!-- Accept Button -->
+                                                <form method="post" asp-action="AcceptRequest" asp-route-requestId="@request.Id" class="me-2">
+                                                    <button type="submit" class="btn btn-outline-success">
+                                                        <i class="bi bi-check-circle"></i> Accept
+                                                    </button>
+                                                </form>
+
+                                                <!-- Reject Button -->
+                                                <form method="post" asp-action="RejectRequest" asp-route-requestId="@request.Id">
+                                                    <button type="submit" class="btn btn-outline-danger">
+                                                        <i class="bi bi-x-circle"></i> Reject
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">
+                                        No friend requests at the moment.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "My Friends";
+}
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h1 class="display-5 text-primary">My Friends</h1>
+            <p class="lead text-muted">View and manage your friend list</p>
+            <a asp-controller="Kawan" asp-action="Create" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-person-plus"></i> Add Friend
+            </a>
+        </div>
+    </div>
+
+    <!-- Friends Table -->
+    <div class="row">
+        <div class="col">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Friend Name</th>
+                                <th>Group</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var friend in Model)
+                                {
+                                    <tr>
+                                        <td><strong>@friend.Friend.Name</strong></td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(friend.Groups?.Name))
+                                            {
+                                                @friend.Groups.Name
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">No group assigned</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <!-- Unfriend Button -->
+                                                <form method="post" action="@Url.Action("UnFriend", "Kawan", new { friendId = friend.FriendId })" onsubmit="return confirm('Are you sure you want to unfriend this person?');">
+                                                    <button type="submit" class="btn btn-outline-danger me-2">
+                                                        <i class="bi bi-person-dash"></i> Unfriend
+                                                    </button>
+                                                </form>
+
+                                                <!-- Edit Button -->
+                                                <a href="@Url.Action("Edit", "Kawan", new { friendId = friend.FriendId })" class="btn btn-outline-primary">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">
+                                        No friends found. Click "Add Friend" to add your first friend!
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

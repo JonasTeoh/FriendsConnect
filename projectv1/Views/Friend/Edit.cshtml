@@ -1,0 +1,55 @@
+﻿@model projectv2.Models.FriendViewModel
+
+<h1>Edit Friend</h1>
+
+@if (Model is null)
+{
+    <p>No friends is found with this ID</p>
+}
+else
+{
+    <form method="post">
+        <div class="mt-3">
+            <label class="form-label"> Id </label>
+            <input type="text" class="form-control" asp-for=Id readonly />
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label"> Name </label>
+            <input type="text" class="form-control" asp-for=Name />
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label"> Contact Info </label>
+            <input type="text" class="form-control" asp-for="ContactInfo" />
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label"> Birthday </label>
+            <input type="date" class="form-control" asp-for="Birthday" />
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label"> Notes </label>
+            <input type="text" class="form-control" asp-for="Notes" />
+        </div>
+
+        <!-- Add checkboxes for selecting multiple friends -->
+        <div class="mt-3">
+            <label class="form-label">Select Group</label>
+            <div>
+                <select class="form-select" asp-for="GroupId">
+                    @foreach (var group in Model.Groups)
+                    {
+                      <option value="@group.Id" selected="@(group.Id == Model.GroupId)">@group.Id - @group.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary me-3">Save</button>
+            <a asp-controller="Friend" asp-action="Index" class="btn btn-secondary">Back</a>
+        </div>
+    </form>
+} 

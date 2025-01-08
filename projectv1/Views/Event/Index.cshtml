@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "My Events";
+}
+<style>
+    .btn-outline-info:hover{
+        color: white;
+    }
+</style>
+
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h1 class="display-5 text-primary">My Events</h1>
+            <p class="lead text-muted">Manage your events and track your activities</p>
+            <a asp-controller="Event" asp-action="Create" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-plus-circle"></i> Add Event
+            </a>
+        </div>
+    </div>
+
+    <!-- Events Table -->
+    <div class="row">
+        <div class="col">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Friends Involved</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null )
+                            {
+                                foreach (var events in Model)
+                                {
+                                    <tr>
+                                        <td><strong>@events.Id</strong></td>
+                                        <td>@events.Name</td>
+                                        <td>@events.Date.ToString("MMM dd, yyyy")</td>
+                                        <td>@events.Location</td>
+                                        <td>@events.Description</td>
+                                        <td>
+                                            <span class="badge @(
+                                                events.Status == "Active"
+                                                ? "bg-success"
+                                                : "bg-secondary")">
+                                                @events.Status
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (events.EventHasFriends != null)
+                                            {
+                                                var i = 0;
+                                                @foreach (var eventHasFriend in events.EventHasFriends)
+                                                {
+                                                    @eventHasFriend.User.Name
+                                                    @if (i < events.EventHasFriends.Count - 1)
+                                                    {
+                                                        @:,
+                                                    }
+                                                    i++;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">No friends involved</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-left">
+                                                <!-- Details Button -->
+                                                <a asp-controller="Event" asp-action="Details" asp-route-id="@events.Id" class="btn btn-outline-info me-2">
+                                                    <i class="bi bi-eye"></i> Details
+                                                </a>
+
+                                                <!-- Edit Button -->
+                                                <a asp-controller="Event" asp-action="Edit" asp-route-id="@events.Id" class="btn btn-outline-primary me-2">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </a>
+
+                                                <!-- Delete Button -->
+                                                <form asp-controller="Event" asp-action="Delete" asp-route-id="@events.Id" method="post" class="d-inline">
+                                                    <button type="submit" class="btn btn-outline-danger">
+                                                        <i class="bi bi-trash"></i> Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted">
+                                        No events found. Start by adding a new event!
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

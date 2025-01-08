@@ -1,0 +1,40 @@
+﻿@model projectv2.Models.FriendViewModel
+
+<h1>Add Friend</h1>
+
+<form method="post">
+    <div class="mt-3">
+        <label class="form-label"> Name </label>
+        <input type="text" class="form-control" asp-for=Name />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label"> Contact Info </label>
+        <input type="text" class="form-control" asp-for="ContactInfo" />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label"> Due Date </label>
+        <input type="date" class="form-control" asp-for="Birthday" />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label"> Notes </label>
+        <input type="text" class="form-control" asp-for="Notes" />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label"> Group </label>
+        <select class="form-select" asp-for="GroupId">
+            @foreach (var group in Model.Groups)
+            {
+                <option value="@group.Id">@group.Id - @group.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary me-3">Save</button>
+        <a asp-controller="Friend" asp-action="Index" class="btn btn-secondary">Back</a>
+    </div>
+</form>

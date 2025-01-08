@@ -1,0 +1,85 @@
+﻿@model projectv2.Models.UserViewModel
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-header text-center">
+                    <h3 class="mb-0" style="color: white;">Add User</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Error Alert -->
+                    @if (ViewData.ModelState["Email"] != null && ViewData.ModelState["Email"].Errors.Count > 0)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewData.ModelState["Email"].Errors[0].ErrorMessage
+                        </div>
+                    }
+
+                    <!-- Form Start -->
+                    <form method="post">
+                        <!-- Name -->
+                        <div class="form-group mt-3">
+                            <label for="Name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Enter full name" required />
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group mt-3">
+                            <label for="Email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="Email" asp-for="Email" placeholder="Enter email address" required />
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="form-group mt-3">
+                            <label for="ContactInfo" class="form-label">Contact Info</label>
+                            <input type="text" class="form-control" id="ContactInfo" asp-for="ContactInfo" placeholder="Enter contact number" required />
+                        </div>
+
+                        <!-- Birthday -->
+                        <div class="form-group mt-3">
+                            <label for="Birthday" class="form-label">Birthday</label>
+                            <input type="date" class="form-control" id="Birthday" asp-for="Birthday" required />
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group mt-3">
+                            <label for="Password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="Password" asp-for="Password" placeholder="Enter password (min 6 characters)" required minlength="6" />
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a asp-controller="User" asp-action="Index" class="btn btn-secondary">Back</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .card-header {
+        background-color: #1E90FF;
+        color: white;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+    }
+
+    .btn-primary {
+        background-color: #1E90FF;
+        border-color: #1E90FF;
+    }
+
+        .btn-primary:hover {
+            background-color: #155a94;
+            border-color: #155a94;
+        }
+
+    .form-control {
+        border-radius: 0.5rem;
+    }
+</style>

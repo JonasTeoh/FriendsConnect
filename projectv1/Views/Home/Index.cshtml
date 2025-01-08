@@ -1,0 +1,177 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h1 class="display-4 text-primary">Welcome @HttpContextAccessor.HttpContext.Session.GetString("UserName")</h1>
+            <p class="lead text-muted">Here’s a quick summary of your activity</p>
+        </div>
+    </div>
+
+    <!-- User Profile Overview Section -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-lg border-light rounded-lg">
+                <div class="card-header bg-primary text-white text-center rounded-top">
+                    <h5>Your Profile</h5>
+                </div>
+                <div class="card-body text-center">
+                    <img src="/img/avatar5.png" alt="User Profile Picture" class="rounded-circle" width="150" />
+                    <h5 class="mt-3">@HttpContextAccessor.HttpContext.Session.GetString("UserName")</h5>
+                    <p class="text-muted">
+                        @if (ViewData["UserNotes"] != null)
+                        {
+                            @ViewData["UserNotes"]
+                        }
+                        else
+                        {
+                            <span>This user has no bios or description</span>
+                        }
+                    </p>
+                    <a class="btn btn-outline-primary" asp-area="" asp-controller="User" asp-action="Edit" asp-route-id="@HttpContextAccessor.HttpContext.Session.GetString("UserId")">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Friend Overview Section -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-light rounded-lg">
+                <div class="card-header bg-success text-white text-center rounded-top">
+                    <h5>Your Friends</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h3>@ViewData["FriendCount"]</h3>
+                    <p class="text-muted">Friends</p>
+                    <a href="@Url.Action("Create", "Kawan")" class="btn btn-outline-success me-2">Add Friends</a>
+                    <a href="@Url.Action("Index", "Kawan")" class="btn btn-outline-success">View Friends</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Group Overview Section -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-light rounded-lg">
+                <div class="card-header bg-info text-white text-center rounded-top">
+                    <h5>Your Groups</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h3>@ViewData["GroupCount"]</h3>
+                    <p class="text-muted">Groups</p>
+                    <a href="@Url.Action("Create", "Group")" class="btn btn-outline-info me-2">Create Group</a>
+                    <a href="@Url.Action("Index", "Group")" class="btn btn-outline-info">View Groups</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activities Section -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card shadow-lg border-light rounded-lg">
+                <div class="card-header bg-primary text-center rounded-top">
+                    <h5>Recent Friend Requests</h5>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        @{
+                            var requests = ViewBag.RecentFriendRequests as List<FriendRequest>;
+                        }
+                        @if (requests.Count != 0)
+                        {
+                            foreach (var request in requests)
+                            {
+                                <li><strong>New Friend Request</strong> from @request.Sender.Name</li>
+                            }
+                        }
+                        else
+                        {
+                            <li>No new friend requests.</li>
+                        }
+                    </ul>
+                    <a href="@Url.Action("Index", "FriendRequest")" class="btn btn-outline-primary">View Friend Requests</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- News Feed Section -->
+    <div class="row">
+        <div class="col">
+            <div class="card shadow-lg border-light rounded-lg">
+                <div class="card-header bg-primary text-white text-center rounded-top">
+                    <h5>News Feed</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.FriendEvents is List<projectv2.Models.Event> friendEvents && friendEvents.Any())
+                    {
+                        <ul>
+                            @foreach (var eventItem in friendEvents)
+                            {
+                                <li>
+                                    <strong>@eventItem.Organizer?.Name</strong> created an event: <strong>@eventItem.Name</strong><br />
+                                    <span>@eventItem.Date.ToString("MMMM dd, yyyy")</span> at <span>@eventItem.Location</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No recent events created by your friends.</p>
+                    }
+                    <a href="@Url.Action("JoinEvent", "Event")" class="btn btn-outline-primary">See All Events</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Optional Footer -->
+<footer class="bg-light py-3 mt-5">
+    <div class="container text-center">
+        <p class="text-muted mb-0">© 2025 Friend Connecting App</p>
+    </div>
+</footer>
+
+<!-- Custom Styles -->
+<style>
+    .card-header {
+        border-top-left-radius: 1rem !important;
+        border-top-right-radius: 1rem !important;
+        color: white;
+    }
+
+    .btn-outline-primary,
+    .btn-outline-success,
+    .btn-outline-info,
+    .btn-outline-warning,
+    .btn-outline-danger {
+        border-radius: 50px;
+    }
+
+        .btn-outline-primary:hover,
+        .btn-outline-success:hover,
+        .btn-outline-info:hover,
+        .btn-outline-warning:hover,
+        .btn-outline-danger:hover {
+            background-color: #1E90FF;
+            color: white;
+        }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .card {
+        border-radius: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .row {
+        margin-bottom: 2rem;
+    }
+</style>
