@@ -1,6 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Friend Requests";
 }
+<style>
+    .btn-outline-info:hover {
+        color: white;
+    }
+</style>
 <div class="container mt-4">
     <!-- Header Section -->
     <div class="row mb-4">
@@ -35,6 +40,10 @@
                                         <td>@request.RequestDate.ToString("MMM dd, yyyy")</td>
                                         <td>
                                             <div class="d-flex">
+                                                <!-- Details Button -->
+                                                <a href="@Url.Action("Details", "User", new { id = request.SenderId })" class="btn btn-outline-info me-2">
+                                                    <i class="bi bi-info-circle"></i> Details
+                                                </a>
                                                 <!-- Accept Button -->
                                                 <form method="post" asp-action="AcceptRequest" asp-route-requestId="@request.Id" class="me-2">
                                                     <button type="submit" class="btn btn-outline-success">

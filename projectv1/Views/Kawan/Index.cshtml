@@ -1,6 +1,11 @@
 ﻿@{
     ViewData["Title"] = "My Friends";
 }
+<style>
+    .btn-outline-info:hover {
+        color: white;
+    }
+</style>
 <div class="container mt-4">
     <!-- Header Section -->
     <div class="row mb-4">
@@ -21,6 +26,7 @@
                     <table class="table table-hover align-middle">
                         <thead class="table-primary">
                             <tr>
+                                <th>Profile Photo</th>
                                 <th>Friend Name</th>
                                 <th>Group</th>
                                 <th>Actions</th>
@@ -32,6 +38,7 @@
                                 foreach (var friend in Model)
                                 {
                                     <tr>
+                                        <td><img src="@Url.Content("~/img/avatar5.png")" alt="Profile Picture" class="rounded-circle" width="50" /></td>
                                         <td><strong>@friend.Friend.Name</strong></td>
                                         <td>
                                             @if (!string.IsNullOrEmpty(friend.Groups?.Name))
@@ -45,6 +52,9 @@
                                         </td>
                                         <td>
                                             <div class="d-flex">
+                                                <a href="@Url.Action("Details", "User", new { id = friend.FriendId })" class="btn btn-outline-info me-2">
+                                                    <i class="bi bi-info-circle"></i> Details
+                                                </a>
                                                 <!-- Unfriend Button -->
                                                 <form method="post" action="@Url.Action("UnFriend", "Kawan", new { friendId = friend.FriendId })" onsubmit="return confirm('Are you sure you want to unfriend this person?');">
                                                     <button type="submit" class="btn btn-outline-danger me-2">

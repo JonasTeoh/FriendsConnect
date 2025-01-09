@@ -123,35 +123,37 @@ namespace projectv2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(KawanViewModel model)
         {
+            // Get the UserId from the session
+            var userId = int.Parse(HttpContext.Session.GetString("UserId"));
 
-                // Check if the GroupId exists in the Groups table
-                var groupExists = await dbContext.Groups
+            // Check if the GroupId exists in the Groups table
+            var groupExists = await dbContext.Groups
                     .AnyAsync(g => g.Id == model.GroupId);
 
-                if (!groupExists)
-                {
-                    // Return an error if the group does not exist
-                    ModelState.AddModelError("GroupId", "The selected group does not exist.");
-                    model.Groups = await dbContext.Groups.ToListAsync(); // Reload groups
-                    return RedirectToAction(nameof(Index));
-                }
+            if (!groupExists)
+            {
+                // Return an error if the group does not exist
+                ModelState.AddModelError("GroupId", "The selected group does not exist.");
+                model.Groups = await dbContext.Groups.ToListAsync(); // Reload groups
+                return RedirectToAction(nameof(Index));
+            }
 
-                // Retrieve the friend record to update
-                var friend = await dbContext.Kawans
-                    .FirstOrDefaultAsync(k => k.FriendId == model.FriendId);
+            // Retrieve the friend record to update
+            var friend = await dbContext.Kawans
+                .FirstOrDefaultAsync(k => k.FriendId == model.FriendId && k.UserId == userId);
 
-                if (friend == null)
-                {
-                    return NotFound();
-                }
+            if (friend == null)
+            {
+                return NotFound();
+            }
 
-                // Update the group for the friend
-                friend.GroupId = model.GroupId;
+            // Update the group for the friend
+            friend.GroupId = model.GroupId;
 
-                // Save changes to the database
-                await dbContext.SaveChangesAsync();
+            // Save changes to the database
+            await dbContext.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index)); // Redirect back to the index or any other page
+            return RedirectToAction(nameof(Index)); // Redirect back to the index or any other page
         }
 
     }

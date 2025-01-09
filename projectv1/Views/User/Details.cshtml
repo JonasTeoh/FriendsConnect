@@ -1,0 +1,30 @@
+﻿@model projectv2.Models.User
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h5>User Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 text-center">
+                    <img src="@Url.Content("~/img/avatar5.png")" alt="Profile Picture" class="rounded-circle" width="150" />
+                </div>
+                <div class="col-md-9">
+                    <h4>@Model.Name</h4>
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Contact Info:</strong> @Model.ContactInfo</p>
+                    <p><strong>Birthday:</strong> @Model.Birthday</p>
+                    <p><strong>Bio:</strong> @(string.IsNullOrEmpty(Model.Notes) ? "No Bio Available" : Model.Notes)</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button type="button" class="btn btn-secondary" onclick="history.back()">Back</button>
+        </div>
+    </div>
+</div>

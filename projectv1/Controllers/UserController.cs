@@ -27,16 +27,7 @@ namespace projectv2.Controllers
             return View(users);
         }
 
-        // GET: UserController/Details/5
-        public ActionResult Details(int id)
-        {
-            if (HttpContext.Session.GetString("UserId") != "1")
-            {
-                return RedirectToAction("Login", "User");
-            }
-            return View();
-        }
-
+        [HttpGet]
         // GET: UserController/Create
         public ActionResult Create()
         {
@@ -279,6 +270,20 @@ namespace projectv2.Controllers
             await dbContext.Users.AddAsync(users);
             await dbContext.SaveChangesAsync();
             return RedirectToAction(nameof(Login));
+        }
+
+        // Details Action
+        public async Task<IActionResult> Details(int id)
+        {
+            var user = await dbContext.Users
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
         }
     }
 }
