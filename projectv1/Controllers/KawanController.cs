@@ -48,7 +48,7 @@ namespace projectv2.Controllers
 
             // Get the friend requests where the current user is involved
             var friendRequests = await dbContext.FriendRequests
-                .Where(fr => (fr.SenderId == userId && fr.IsRejected == false ))
+                .Where(fr => (fr.SenderId == userId && fr.IsRejected == false && fr.IsAccepted == false ))
                 .ToListAsync();
 
             // Pass the list of users and the friend requests to the view
