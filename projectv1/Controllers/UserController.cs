@@ -126,11 +126,10 @@ namespace projectv2.Controllers
 
             user.Name = viewModel.Name;
             user.Email = viewModel.Email;
-            user.Email = viewModel.ContactInfo;
+            user.ContactInfo = viewModel.ContactInfo;
             user.Birthday = viewModel.Birthday;
             user.Notes = viewModel.Notes;
             await dbContext.SaveChangesAsync();
-            HttpContext.Session.SetString("UserName", viewModel.Name);
 
             return RedirectToAction("Index", "User");
         }

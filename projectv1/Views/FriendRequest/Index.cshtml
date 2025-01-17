@@ -20,9 +20,10 @@
         <div class="col">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <table class="table table-hover align-middle">
+                    <table id="myTable" class="table table-hover align-middle">
                         <thead class="table-primary">
                             <tr>
+                                <th>Profile Photo</th>
                                 <th>Sender</th>
                                 <th>Request Date</th>
                                 <th>Actions</th>
@@ -34,6 +35,7 @@
                                 foreach (var request in Model)
                                 {
                                     <tr>
+                                        <td><img src="@Url.Content("~/img/avatar5.png")" alt="Profile Picture" class="rounded-circle" width="50" /></td>
                                         <td>
                                             <strong>@request.Sender.Name</strong>
                                         </td>
@@ -77,3 +79,8 @@
         </div>
     </div>
 </div>
+<script>
+    let table = new DataTable('#myTable', {
+        // options
+    });
+</script>

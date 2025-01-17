@@ -23,7 +23,7 @@
         <div class="col">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <table class="table table-hover align-middle">
+                    <table id="myTable" class="table table-hover align-middle">
                         <thead class="table-primary">
                             <tr>
                                 <th>Profile Photo</th>
@@ -86,3 +86,8 @@
         </div>
     </div>
 </div>
+<script>
+    let table = new DataTable('#myTable', {
+        // options
+    });
+</script>

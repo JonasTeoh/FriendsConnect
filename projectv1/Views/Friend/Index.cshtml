@@ -8,7 +8,7 @@
 <a asp-controller="Friend" asp-action="Create" class="btn btn-primary">Add Friend</a>
 <br />
 
-<table class="table">
+<table id="myTable" class="table ">
 	<thead>
 		<tr>
 			<!--table row-->
@@ -43,3 +43,8 @@
 		}
 	</tbody>
 </table> 
+<script>
+	let table = new DataTable('#myTable', {
+		// options
+	});
+</script>

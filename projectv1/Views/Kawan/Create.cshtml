@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<projectv2.Models.FriendRequestViewModel>
-
+<style>
+    .btn-outline-info:hover {
+        color: white;
+    }
+</style>
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-10 mx-auto">
@@ -8,9 +12,10 @@
                     <h3 class="mb-0">Add a Friend</h3>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered table-striped">
-                        <thead class="thead-dark">
+                    <table id="myTable" class="table table-bordered">
+                        <thead class="table-primary">
                             <tr>
+                                <th>Profile Photo</th>
                                 <th>User Name</th>
                                 <th>Email</th>
                                 <th>Actions</th>
@@ -20,9 +25,13 @@
                             @foreach (var modal in Model)
                             {
                                 <tr>
+                                    <td><img src="@Url.Content("~/img/avatar5.png")" alt="Profile Picture" class="rounded-circle" width="50" /></td>
                                     <td>@modal.User.Name</td>
                                     <td>@modal.User.Email</td>
                                     <td>
+                                        <a href="@Url.Action("Details", "User", new { id = modal.User.Id })" class="btn btn-outline-info me-2">
+                                                    <i class="bi bi-info-circle"></i> Details
+                                                </a>
                                         @if (modal.IsRequestSent)
                                         {
                                             <button class="btn btn-secondary" disabled>Request Sent</button>
@@ -46,6 +55,11 @@
         </div>
     </div>
 </div>
+<script>
+    let table = new DataTable('#myTable', {
+        // options
+    });
+</script>
 
 <!-- Custom Styles -->
 <style>
